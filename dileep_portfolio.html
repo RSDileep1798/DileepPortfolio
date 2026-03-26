@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>R.S Dileep — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #060810;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.09);
+  --border2: rgba(99,210,255,0.25);
+  --text: #e8edf5;
+  --text2: #8a96aa;
+  --text3: #5a6476;
+  --accent: #3ecfff;
+  --accent2: #7b5fff;
+  --accent3: #00ffa3;
+  --glow: rgba(62,207,255,0.15);
+  --glow2: rgba(123,95,255,0.12);
+  --card-bg: rgba(12,16,28,0.85);
+  --radius: 16px;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'Outfit', sans-serif;
+}
+[data-theme="light"] {
+  --bg: #f0f4fb;
+  --surface: rgba(255,255,255,0.7);
+  --surface2: rgba(255,255,255,0.9);
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(62,207,255,0.4);
+  --text: #0d1117;
+  --text2: #4a5568;
+  --text3: #8a96aa;
+  --card-bg: rgba(255,255,255,0.85);
+  --glow: rgba(62,207,255,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  transition:background 0.4s,color 0.4s;
+}
+
+/* ─── ANIMATED BACKGROUND ─── */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:0.7;
+}
+
+/* ─── SPLASH SCREEN ─── */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:32px;
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+#splash.out{opacity:0;transform:scale(1.04);pointer-events:none;}
+.monogram{
+  width:80px;height:80px;
+  border:2px solid var(--accent);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:28px;font-weight:800;
+  color:var(--accent);
+  box-shadow:0 0 40px var(--glow),0 0 80px var(--glow);
+  animation:pulse-ring 1.5s ease-in-out infinite;
+  position:relative;
+}
+.monogram::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(62,207,255,0.2);
+  animation:pulse-ring 1.5s ease-in-out infinite 0.3s;
+}
+@keyframes pulse-ring{
+  0%,100%{box-shadow:0 0 20px var(--glow),0 0 60px var(--glow);}
+  50%{box-shadow:0 0 50px rgba(62,207,255,0.35),0 0 100px rgba(62,207,255,0.2);}
+}
+.splash-label{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.25em;
+  color:var(--text3);text-transform:uppercase;
+}
+.progress-bar{
+  width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px;
+  animation:load-progress 1.4s ease-out forwards;
+}
+@keyframes load-progress{0%{width:0%;}100%{width:100%;}}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:2;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 0;
+  backdrop-filter:blur(20px);
+  background:rgba(6,8,16,0.7);
+  border-bottom:1px solid var(--border);
+  transition:all 0.3s;
+}
+[data-theme="light"] nav{background:rgba(240,244,251,0.85);}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:var(--font-display);font-size:18px;font-weight:800;
+  color:var(--accent);letter-spacing:-0.02em;
+}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;
+  color:var(--text2);text-decoration:none;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--accent);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.theme-btn{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text2);width:36px;height:36px;border-radius:50%;
+  cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+.burger{
+  display:none;background:none;border:1px solid var(--border);
+  color:var(--text);width:36px;height:36px;border-radius:8px;
+  cursor:pointer;font-size:16px;align-items:center;justify-content:center;
+}
+
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;z-index:200;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  width:0%;transition:width 0.1s linear;
+}
+
+/* ─── SECTION DOTS ─── */
+.section-dots{
+  position:fixed;right:24px;top:50%;transform:translateY(-50%);
+  z-index:50;display:flex;flex-direction:column;gap:12px;
+}
+.sdot{
+  width:6px;height:6px;border-radius:50%;background:var(--text3);
+  transition:all 0.3s;cursor:pointer;
+}
+.sdot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);transform:scale(1.5);}
+.sdot-label{
+  position:absolute;right:20px;font-family:var(--font-mono);font-size:10px;
+  color:var(--text3);white-space:nowrap;opacity:0;transition:opacity 0.2s;
+  top:50%;transform:translateY(-50%);
+}
+.sdot-wrap{position:relative;display:flex;align-items:center;}
+.sdot-wrap:hover .sdot-label{opacity:1;}
+
+/* ─── HERO ─── */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 0 80px;position:relative;overflow:hidden;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:24px;
+}
+.hero-tag::before{content:'';width:24px;height:1px;background:var(--accent);}
+.hero-name{
+  font-family:var(--font-display);font-size:clamp(48px,6vw,80px);
+  font-weight:800;line-height:0.95;letter-spacing:-0.03em;
+  margin-bottom:16px;
+}
+.hero-name .line2{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-role{
+  font-family:var(--font-mono);font-size:13px;color:var(--text2);
+  letter-spacing:0.1em;margin-bottom:24px;
+}
+.hero-summary{
+  font-size:16px;line-height:1.7;color:var(--text2);
+  max-width:500px;margin-bottom:40px;
+}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{
+  padding:14px 28px;border-radius:10px;font-family:var(--font-display);
+  font-size:14px;font-weight:700;letter-spacing:0.05em;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all 0.3s;position:relative;overflow:hidden;
+}
+.btn-primary::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.btn-primary:hover::after{opacity:1;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(62,207,255,0.3);}
+.btn-secondary{
+  padding:13px 28px;border-radius:10px;font-family:var(--font-display);
+  font-size:14px;font-weight:700;letter-spacing:0.05em;
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border2);cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+.hero-visual{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.hero-orb{
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,var(--accent2),var(--accent),transparent 70%);
+  opacity:0.15;filter:blur(60px);position:absolute;
+}
+.hero-card{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:20px;
+  padding:32px;width:100%;max-width:360px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.4);position:relative;z-index:1;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(135deg,rgba(62,207,255,0.05),rgba(123,95,255,0.05));
+  pointer-events:none;
+}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.stat-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px;text-align:center;
+}
+.stat-num{
+  font-family:var(--font-display);font-size:28px;font-weight:800;
+  color:var(--accent);display:block;
+}
+.stat-lbl{font-size:11px;color:var(--text3);font-family:var(--font-mono);letter-spacing:0.1em;}
+.skill-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;
+  font-family:var(--font-mono);font-size:11px;color:var(--text2);
+}
+.chip.hot{border-color:var(--accent2);color:var(--accent);}
+
+/* ─── TOP IMPACT STRIP ─── */
+.impact-strip{
+  background:linear-gradient(135deg,rgba(62,207,255,0.08),rgba(123,95,255,0.08));
+  border:1px solid var(--border2);border-radius:var(--radius);
+  padding:24px 32px;margin:60px 0 0;
+}
+.impact-strip-title{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:16px;
+}
+.impact-strip-items{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.impact-item{display:flex;gap:12px;align-items:flex-start;}
+.impact-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.impact-text{font-size:14px;color:var(--text2);line-height:1.5;}
+.impact-text strong{color:var(--accent3);}
+
+/* ─── SECTIONS ─── */
+section{padding:100px 0;position:relative;z-index:2;}
+.section-header{margin-bottom:60px;}
+.section-tag{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.25em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:block;
+}
+.section-title{
+  font-family:var(--font-display);font-size:clamp(32px,4vw,52px);
+  font-weight:800;letter-spacing:-0.03em;line-height:1.1;
+}
+.section-line{width:48px;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;margin-top:16px;}
+
+/* ─── EXPERIENCE TIMELINE ─── */
+.timeline{position:relative;}
+.timeline::before{
+  content:'';position:absolute;left:24px;top:0;bottom:0;
+  width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent);
+  opacity:0.4;
+}
+.tl-item{
+  padding-left:72px;position:relative;margin-bottom:32px;
+}
+.tl-dot{
+  position:absolute;left:17px;top:24px;width:15px;height:15px;
+  border-radius:50%;border:2px solid var(--accent);background:var(--bg);
+  box-shadow:0 0 12px var(--glow);z-index:1;
+  transition:all 0.3s;
+}
+.tl-card{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;
+  transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s;
+}
+.tl-card:hover{border-color:var(--border2);box-shadow:0 8px 40px rgba(62,207,255,0.08);transform:translateX(4px);}
+.tl-card.open{border-color:var(--border2);}
+.tl-header{padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.tl-meta{flex:1;}
+.tl-company{
+  font-family:var(--font-display);font-size:18px;font-weight:700;
+  color:var(--text);margin-bottom:4px;
+}
+.tl-role{
+  font-family:var(--font-mono);font-size:12px;color:var(--accent);
+  letter-spacing:0.1em;margin-bottom:4px;
+}
+.tl-dates{font-size:12px;color:var(--text3);font-family:var(--font-mono);}
+.tl-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.badge{
+  background:rgba(62,207,255,0.1);border:1px solid rgba(62,207,255,0.2);
+  color:var(--accent);border-radius:20px;padding:3px 10px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;
+}
+.badge.green{background:rgba(0,255,163,0.08);border-color:rgba(0,255,163,0.2);color:var(--accent3);}
+.badge.purple{background:rgba(123,95,255,0.1);border-color:rgba(123,95,255,0.2);color:var(--accent2);}
+.tl-toggle{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface);display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--text3);transition:all 0.3s;flex-shrink:0;
+}
+.tl-card.open .tl-toggle{transform:rotate(180deg);border-color:var(--accent);color:var(--accent);}
+.tl-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.tl-card.open .tl-body{max-height:800px;}
+.tl-inner{padding:0 28px 24px;}
+.tl-inner hr{border:none;border-top:1px solid var(--border);margin-bottom:20px;}
+.tl-bullets{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.tl-bullets li{
+  display:flex;gap:12px;font-size:14px;color:var(--text2);line-height:1.6;
+}
+.tl-bullets li::before{content:'›';color:var(--accent);font-size:16px;flex-shrink:0;margin-top:1px;}
+.tl-bullets li .metric{color:var(--accent3);font-weight:600;}
+
+/* ─── ACHIEVEMENTS ─── */
+.achv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+.achv-card{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;transition:all 0.3s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.achv-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 100% 0%,var(--glow),transparent 60%);
+  opacity:0;transition:opacity 0.4s;pointer-events:none;
+}
+.achv-card:hover::before{opacity:1;}
+.achv-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 20px 50px rgba(62,207,255,0.1);}
+.achv-icon{font-size:32px;margin-bottom:16px;display:block;}
+.achv-num{
+  font-family:var(--font-display);font-size:40px;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;margin-bottom:4px;
+}
+.achv-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.achv-desc{font-size:13px;color:var(--text2);line-height:1.5;}
+
+/* ─── SKILLS ─── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.skill-group{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+  transition:border-color 0.3s;
+}
+.skill-group:hover{border-color:var(--border2);}
+.sg-title{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:16px;
+}
+.sg-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.sg-chip{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;
+  font-size:13px;color:var(--text2);transition:all 0.2s;
+}
+.sg-chip:hover{border-color:var(--accent);color:var(--text);background:var(--surface2);}
+
+/* ─── CERTIFICATIONS ─── */
+.cert-list{display:flex;flex-direction:column;gap:12px;}
+.cert-item{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;display:flex;align-items:center;gap:16px;
+  transition:all 0.3s;
+}
+.cert-item:hover{border-color:var(--border2);}
+.cert-icon{font-size:24px;flex-shrink:0;}
+.cert-name{font-size:14px;font-weight:600;color:var(--text);}
+.cert-provider{font-size:12px;color:var(--text3);font-family:var(--font-mono);}
+
+/* ─── EDUCATION ─── */
+.edu-card{
+  background:var(--card-bg);border:1px solid var(--border2);border-radius:var(--radius);
+  padding:32px;display:flex;gap:24px;align-items:flex-start;
+}
+.edu-icon{font-size:40px;flex-shrink:0;}
+.edu-school{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.edu-degree{font-size:15px;color:var(--accent);margin-bottom:8px;}
+.edu-detail{font-size:13px;color:var(--text2);}
+
+/* ─── CONTACT / FOOTER ─── */
+#contact{background:linear-gradient(135deg,rgba(62,207,255,0.04),rgba(123,95,255,0.04));}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.contact-title{
+  font-family:var(--font-display);font-size:clamp(28px,4vw,48px);
+  font-weight:800;letter-spacing:-0.03em;margin-bottom:16px;
+}
+.contact-sub{font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:32px;}
+.contact-links{display:flex;flex-direction:column;gap:12px;}
+.contact-link{
+  display:flex;align-items:center;gap:12px;
+  font-size:14px;color:var(--text2);text-decoration:none;
+  transition:color 0.2s;
+}
+.contact-link:hover{color:var(--accent);}
+.cl-icon{width:36px;height:36px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.contact-visual{display:flex;justify-content:center;}
+.contact-card{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:20px;
+  padding:40px;text-align:center;width:100%;max-width:320px;
+}
+.cc-avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:28px;font-weight:800;color:#fff;
+  margin:0 auto 16px;
+  box-shadow:0 0 40px rgba(62,207,255,0.3);
+}
+.cc-name{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:4px;}
+.cc-title{font-size:13px;color:var(--text3);font-family:var(--font-mono);margin-bottom:20px;}
+.cc-loc{font-size:13px;color:var(--text2);margin-bottom:4px;}
+footer{padding:24px 0;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--text3);font-family:var(--font-mono);}
+
+/* ─── REVEAL ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.in{opacity:1;transform:none;}
+.reveal-l{opacity:0;transform:translateX(-30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal-l.in{opacity:1;transform:none;}
+.reveal-r{opacity:0;transform:translateX(30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal-r.in{opacity:1;transform:none;}
+
+/* ─── MOBILE NAV ─── */
+.mobile-menu{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(6,8,16,0.97);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;
+  transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.mobile-menu.open{transform:none;}
+.mobile-menu a{
+  font-family:var(--font-display);font-size:32px;font-weight:700;
+  color:var(--text);text-decoration:none;transition:color 0.2s;
+}
+.mobile-menu a:hover{color:var(--accent);}
+.menu-close{
+  position:absolute;top:24px;right:24px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text);width:40px;height:40px;border-radius:50%;
+  cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+}
+
+/* ─── COUNTER ─── */
+.counting{transition:color 0.3s;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .hero-grid{grid-template-columns:1fr;gap:40px;}
+  .hero-visual{display:none;}
+  .impact-strip-items{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .contact-visual{display:none;}
+  .timeline::before{left:12px;}
+  .tl-item{padding-left:44px;}
+  .tl-dot{left:5px;}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .section-dots{display:none;}
+}
+@media(max-width:480px){
+  .achv-grid{grid-template-columns:1fr;}
+  .skills-grid{grid-template-columns:1fr;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .hero-ctas{flex-direction:column;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  .reveal,.reveal-l,.reveal-r{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollBar"></div>
+
+<!-- Animated Canvas Background -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Splash Screen -->
+<div id="splash">
+  <div class="monogram">RD</div>
+  <div class="splash-label">Loading Portfolio</div>
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">RSD</div>
+    <div class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀</button>
+      <button class="burger" onclick="openMenu()">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="menu-close" onclick="closeMenu()">✕</button>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#achievements" onclick="closeMenu()">Achievements</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#education" onclick="closeMenu()">Education</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- Section Dots -->
+<div class="section-dots" id="sectionDots"></div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal-l">
+        <div class="hero-tag">Available for opportunities</div>
+        <h1 class="hero-name">
+          R.S.<br/><span class="line2">Dileep</span>
+        </h1>
+        <div class="hero-role">SOFTWARE ENGINEER &nbsp;·&nbsp; FULL STACK DEVELOPER &nbsp;·&nbsp; AI SYSTEMS</div>
+        <p class="hero-summary">
+          Full-stack engineer and cloud architect with hands-on expertise in Python, Java, AWS, and AI/ML pipelines. Passionate about building resilient distributed systems, automating CI/CD workflows, and driving data-driven decisions through analytics.
+        </p>
+        <div class="hero-ctas">
+          <a href="#experience" class="btn-primary">View Experience →</a>
+          <a href="#resume-dl" class="btn-secondary">Download Resume ↓</a>
+        </div>
+      </div>
+      <div class="reveal-r">
+        <div class="hero-visual">
+          <div class="hero-orb"></div>
+          <div class="hero-card">
+            <div class="stat-row">
+              <div class="stat-box"><span class="stat-num">5+</span><span class="stat-lbl">Years Exp</span></div>
+              <div class="stat-box"><span class="stat-num">30%</span><span class="stat-lbl">Perf Gain</span></div>
+              <div class="stat-box"><span class="stat-num">80%</span><span class="stat-lbl">Less Manual</span></div>
+              <div class="stat-box"><span class="stat-num">150+</span><span class="stat-lbl">Tickets/mo</span></div>
+            </div>
+            <div class="skill-chips">
+              <span class="chip hot">Python</span>
+              <span class="chip hot">Java Spring</span>
+              <span class="chip">AWS</span>
+              <span class="chip">Kubernetes</span>
+              <span class="chip">Docker</span>
+              <span class="chip">SQL</span>
+              <span class="chip">React</span>
+              <span class="chip">Power BI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top 3 Impact Strip -->
+    <div class="impact-strip reveal">
+      <div class="impact-strip-title">⚡ Top 3 Impact Highlights</div>
+      <div class="impact-strip-items">
+        <div class="impact-item">
+          <div class="impact-icon">🚀</div>
+          <div class="impact-text">Reduced manual processing effort by <strong>80%</strong> with Python analytics & automated pipelines at Louisiana Tech University</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-icon">💰</div>
+          <div class="impact-text">Achieved <strong>25% reduction</strong> in operational costs through cloud-native AWS architecture at LEPRO IT LLC</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-icon">⚡</div>
+          <div class="impact-text">Delivered <strong>20% reduction</strong> in request latency with C++ multi-threading & Spring integration at LEPRO IT LLC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<section id="experience">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">Career Journey</span>
+      <h2 class="section-title">Work Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+
+      <!-- LEPRO IT LLC -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleCard(this)">
+          <div class="tl-header">
+            <div class="tl-meta">
+              <div class="tl-company">LEPRO IT LLC</div>
+              <div class="tl-role">SOFTWARE ENGINEER</div>
+              <div class="tl-dates">Nov 2025 – Present (5 months) · Milpitas, CA</div>
+              <div class="tl-badges">
+                <span class="badge">C++</span>
+                <span class="badge">Java Spring</span>
+                <span class="badge">AWS</span>
+                <span class="badge green">-20% Latency</span>
+                <span class="badge green">-25% Costs</span>
+              </div>
+            </div>
+            <div class="tl-toggle">▾</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-inner">
+              <hr/>
+              <ul class="tl-bullets">
+                <li>Designed and implemented performance-critical services in C++ with multi-threading and OOP, achieving a <span class="metric">20% reduction in request latency</span> while seamlessly integrating with existing Java Spring modules.</li>
+                <li>Built and optimized RESTful APIs with Spring MVC and implemented cross-cutting concerns using Spring AOP for logging, security, and exception handling.</li>
+                <li>Leveraged AWS services (EC2, S3, Lambda, RDS) to deploy and scale backend systems, ensuring high availability and secure cloud operations.</li>
+                <li>Managed dependency builds using Maven, improving build reliability, version management, and CI/CD integration.</li>
+                <li>Developed scalable Java-based backend applications using Spring Framework, improving modularity, performance, and maintainability by <span class="metric">30%</span> through optimized code refactoring and best practices.</li>
+                <li>Designed and deployed cloud-native systems on AWS, utilizing EC2, S3, Lambda, and RDS to ensure high availability, security, and scalability, resulting in a <span class="metric">25% reduction in operational costs</span>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Louisiana Tech -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleCard(this)">
+          <div class="tl-header">
+            <div class="tl-meta">
+              <div class="tl-company">Louisiana Tech University</div>
+              <div class="tl-role">GRADUATE ASSISTANT – SYSTEM ANALYST</div>
+              <div class="tl-dates">Sep 2023 – Dec 2025 (2 yrs 4 mos) · Ruston, LA</div>
+              <div class="tl-badges">
+                <span class="badge">Python</span>
+                <span class="badge">SQL</span>
+                <span class="badge">Power BI</span>
+                <span class="badge green">-80% Manual Work</span>
+                <span class="badge purple">150+ Tickets/mo</span>
+              </div>
+            </div>
+            <div class="tl-toggle">▾</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-inner">
+              <hr/>
+              <ul class="tl-bullets">
+                <li>Provided Level 2 support for data-driven applications, dashboards, and automation tools used by faculty and research teams.</li>
+                <li>Designed and maintained ETL data integration pipelines for ingesting, transforming, and analyzing financial and market datasets using Python and SQL.</li>
+                <li>Developed Python-based analytics and reporting solutions using REST APIs, JSON data, and automated pipelines, reducing manual processing effort by <span class="metric">80%</span>.</li>
+                <li>Designed and maintained interactive Power BI dashboards for operational and financial analysis, contributing to a <span class="metric">15% improvement</span> in portfolio decision outcomes.</li>
+                <li>Diagnosed and rectified <span class="metric">90%</span> of first-level technical issues within SLA timeframe, boosting end-user productivity and decreasing escalation rates by ~<span class="metric">10%</span>.</li>
+                <li>Resolved over <span class="metric">150 hardware, software, and network issues monthly</span>, including LAN/WAN troubleshooting, resulting in a 15% reduction in campus-wide IT disruptions.</li>
+                <li>Improved portfolio forecasting accuracy by <span class="metric">15%</span> through data-driven analysis and statistical modeling, visualized using Power BI dashboards.</li>
+                <li>Managed incidents, problems, and changes within an ITIL framework, reducing incident resolution time and improving SLA compliance.</li>
+                <li>Supported hybrid infrastructure integrating on-prem and cloud systems using Azure and VMware virtualization.</li>
+                <li>Administered Microsoft Windows Server, configured RAID, NAS, and SAN storage systems, and managed network settings including TCP/IP, DNS, and DHCP protocols.</li>
+                <li>VOIP configuration, CAT 6 cable setup, MacBook and OS support, and management of over 150 helpdesk tickets monthly using K1000, Jira, and Workday.</li>
+                <li>Installed and maintained secure wireless networks, configured hot desk setups, and managed data backup systems to ensure operational continuity.</li>
+                <li>Automated ticket ingestion from Jira and Workday into MySQL for trend analytics.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DVSport -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleCard(this)">
+          <div class="tl-header">
+            <div class="tl-meta">
+              <div class="tl-company">DVSport, Inc.</div>
+              <div class="tl-role">SYSTEM NETWORK ADMINISTRATOR</div>
+              <div class="tl-dates">Mar 2025 – Jun 2025 (4 months) · Ruston, LA</div>
+              <div class="tl-badges">
+                <span class="badge">Broadcast AV</span>
+                <span class="badge">IPTV</span>
+                <span class="badge">IoT</span>
+                <span class="badge purple">Live Events</span>
+              </div>
+            </div>
+            <div class="tl-toggle">▾</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-inner">
+              <hr/>
+              <ul class="tl-bullets">
+                <li>Supported high-profile sports executives and officials with replay systems during live NCAA football, basketball, and baseball events.</li>
+                <li>Provided technical support for large-venue broadcast and AV systems, including radio/TV distribution, IPTV, and event streaming technologies.</li>
+                <li>Contributed to the deployment of IoT/instrumentation technologies, enabling real-time data collection and operational analytics for facilities.</li>
+                <li>Operated professional replay systems (EVS, DreamCatcher, or similar) for live sports broadcasts.</li>
+                <li>Captured, clipped, and cued multi-angle video feeds for instant playback.</li>
+                <li>Synchronized replay outputs with live production switchers and broadcast servers.</li>
+                <li>Performed system checks, media management, and real-time troubleshooting during events.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EITACIES -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleCard(this)">
+          <div class="tl-header">
+            <div class="tl-meta">
+              <div class="tl-company">EITACIES Inc.</div>
+              <div class="tl-role">SOFTWARE DEVELOPER</div>
+              <div class="tl-dates">Jan 2020 – Jun 2023 (3 yrs 6 mos)</div>
+              <div class="tl-badges">
+                <span class="badge">Python</span>
+                <span class="badge">FastAPI</span>
+                <span class="badge">MongoDB</span>
+                <span class="badge">ETL</span>
+                <span class="badge">Agile</span>
+              </div>
+            </div>
+            <div class="tl-toggle">▾</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-inner">
+              <hr/>
+              <ul class="tl-bullets">
+                <li>Designed, developed, and sustained backend software solutions using Python with strong object-oriented principles, supporting business-critical applications.</li>
+                <li>Built and optimized ETL workflows using Matillion platform for data integration from multiple source systems into centralized databases for analytics and reporting.</li>
+                <li>Built and maintained RESTful Web Services using FastAPI and Flask, exchanging data via JSON and integrating with external systems.</li>
+                <li>Wrote and optimized complex SQL queries, stored procedures, and error-handling logic to support large-scale data processing.</li>
+                <li>Implemented data persistence layers using MongoDB, enabling reliable data flow between production services and third-party integrations.</li>
+                <li>Supported deployment, monitoring, and troubleshooting of applications in AWS and containerized environments, providing Level 2/3 production support.</li>
+                <li>Collaborated in Agile (SCRUM) teams, participating in full design, development, testing, documentation, and release cycles.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maximizer -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleCard(this)">
+          <div class="tl-header">
+            <div class="tl-meta">
+              <div class="tl-company">Maximizer</div>
+              <div class="tl-role">JUNIOR DEVELOPER</div>
+              <div class="tl-dates">Jun 2019 – Jan 2020 (8 months) · Bengaluru, India</div>
+              <div class="tl-badges">
+                <span class="badge">React</span>
+                <span class="badge">Angular</span>
+                <span class="badge">AWS</span>
+              </div>
+            </div>
+            <div class="tl-toggle">▾</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-inner">
+              <hr/>
+              <ul class="tl-bullets">
+                <li>Involved in all phases of the SDLC, from requirements collection to application development for dynamic user experiences.</li>
+                <li>Migrated AngularJS controllers to Angular 2 components, enhancing performance and enabling lazy loading.</li>
+                <li>Developed web applications using React.JS, facilitating seamless rendering on both client and server sides.</li>
+                <li>Managed cloud infrastructure on AWS, ensuring reliable and highly available environments.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ACHIEVEMENTS ═══════════════ -->
+<section id="achievements">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">Impact & Metrics</span>
+      <h2 class="section-title">Key Achievements</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="achv-grid">
+      <div class="achv-card reveal">
+        <span class="achv-icon">⚡</span>
+        <span class="achv-num" data-target="80">0</span>
+        <div class="achv-title">% Reduction in Manual Processing</div>
+        <div class="achv-desc">Python analytics and automated REST API pipelines eliminated manual reporting at Louisiana Tech University.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">💰</span>
+        <span class="achv-num" data-target="25">0</span>
+        <div class="achv-title">% Reduction in Operational Costs</div>
+        <div class="achv-desc">Cloud-native AWS architecture with EC2, S3, Lambda, and RDS reduced costs at LEPRO IT LLC.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">🚀</span>
+        <span class="achv-num" data-target="30">0</span>
+        <div class="achv-title">% Performance Improvement</div>
+        <div class="achv-desc">Java Spring backend modularization and code refactoring increased maintainability by 30%.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">⚙️</span>
+        <span class="achv-num" data-target="20">0</span>
+        <div class="achv-title">% Latency Reduction</div>
+        <div class="achv-desc">C++ multi-threading and OOP design principles reduced request latency in production services.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">📊</span>
+        <span class="achv-num" data-target="15">0</span>
+        <div class="achv-title">% Better Portfolio Forecasting</div>
+        <div class="achv-desc">Data-driven statistical modeling and Power BI dashboards improved portfolio decision accuracy.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">🎯</span>
+        <span class="achv-num" data-target="90">0</span>
+        <div class="achv-title">% First-Level Issue Resolution</div>
+        <div class="achv-desc">Resolved 90% of technical issues within SLA, reducing escalation rates by ~10%.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">🎫</span>
+        <span class="achv-num" data-target="150">0</span>
+        <div class="achv-title">+ Tickets Resolved Monthly</div>
+        <div class="achv-desc">Consistently resolved 150+ hardware, software, and network issues per month at Louisiana Tech.</div>
+      </div>
+      <div class="achv-card reveal">
+        <span class="achv-icon">📡</span>
+        <span class="achv-num" data-target="15">0</span>
+        <div class="achv-title">% Fewer Campus IT Disruptions</div>
+        <div class="achv-desc">LAN/WAN troubleshooting and proactive network management reduced campus-wide disruptions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SKILLS ═══════════════ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">Technical Arsenal</span>
+      <h2 class="section-title">Skills & Technologies</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="sg-title">Languages</div>
+        <div class="sg-chips">
+          <span class="sg-chip">Python</span>
+          <span class="sg-chip">Java</span>
+          <span class="sg-chip">C++</span>
+          <span class="sg-chip">JavaScript</span>
+          <span class="sg-chip">PHP</span>
+          <span class="sg-chip">R</span>
+          <span class="sg-chip">SQL</span>
+          <span class="sg-chip">TypeScript</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="sg-title">Frameworks & Libraries</div>
+        <div class="sg-chips">
+          <span class="sg-chip">Spring MVC / AOP</span>
+          <span class="sg-chip">FastAPI</span>
+          <span class="sg-chip">Flask</span>
+          <span class="sg-chip">React.js</span>
+          <span class="sg-chip">AngularJS / Angular 2</span>
+          <span class="sg-chip">Maven</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="sg-title">Cloud & DevOps</div>
+        <div class="sg-chips">
+          <span class="sg-chip">AWS (EC2, S3, Lambda, RDS)</span>
+          <span class="sg-chip">GCP</span>
+          <span class="sg-chip">Azure</span>
+          <span class="sg-chip">Docker</span>
+          <span class="sg-chip">Kubernetes</span>
+          <span class="sg-chip">Jenkins</span>
+          <span class="sg-chip">CI/CD</span>
+          <span class="sg-chip">VMware</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="sg-title">Data & Analytics</div>
+        <div class="sg-chips">
+          <span class="sg-chip">Power BI</span>
+          <span class="sg-chip">ETL / Matillion</span>
+          <span class="sg-chip">MongoDB</span>
+          <span class="sg-chip">MySQL</span>
+          <span class="sg-chip">REST APIs</span>
+          <span class="sg-chip">JSON Pipelines</span>
+          <span class="sg-chip">Statistical Modeling</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="sg-title">IT & Infrastructure</div>
+        <div class="sg-chips">
+          <span class="sg-chip">Windows Server</span>
+          <span class="sg-chip">RAID / NAS / SAN</span>
+          <span class="sg-chip">TCP/IP, DNS, DHCP</span>
+          <span class="sg-chip">LAN/WAN</span>
+          <span class="sg-chip">VOIP</span>
+          <span class="sg-chip">ITIL Framework</span>
+          <span class="sg-chip">Jira / Workday / K1000</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="sg-title">Broadcast & IoT</div>
+        <div class="sg-chips">
+          <span class="sg-chip">IPTV</span>
+          <span class="sg-chip">EVS / DreamCatcher</span>
+          <span class="sg-chip">AV Systems</span>
+          <span class="sg-chip">Live Streaming</span>
+          <span class="sg-chip">IoT / Instrumentation</span>
+          <span class="sg-chip">Real-time Analytics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CERTIFICATIONS ═══════════════ -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">Credentials</span>
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cert-list">
+      <div class="cert-item reveal">
+        <span class="cert-icon">🏅</span>
+        <div>
+          <div class="cert-name">Practice Exam 1 for CompTIA A+ (220-1101)</div>
+          <div class="cert-provider">CompTIA A+ Certification</div>
+        </div>
+      </div>
+      <div class="cert-item reveal">
+        <span class="cert-icon">🏅</span>
+        <div>
+          <div class="cert-name">Practice Exam 1 for CompTIA Network+ (N10-009)</div>
+          <div class="cert-provider">CompTIA Network+</div>
+        </div>
+      </div>
+      <div class="cert-item reveal">
+        <span class="cert-icon">🏅</span>
+        <div>
+          <div class="cert-name">SQL with Data Analyst</div>
+          <div class="cert-provider">Data Analytics Certification</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EDUCATION ═══════════════ -->
+<section id="education">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">Academic Background</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <div class="edu-school">Louisiana Tech University</div>
+        <div class="edu-degree">Master's in Computer Science Engineering</div>
+        <div class="edu-detail">Ruston, Louisiana, United States</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="reveal-l">
+        <span class="section-tag">Get In Touch</span>
+        <div class="contact-title">Let's Build Something<br/>Extraordinary</div>
+        <p class="contact-sub">Open to full-time opportunities, contract work, and collaborations in software engineering, cloud architecture, and AI systems.</p>
+        <div class="contact-links">
+          <a href="tel:318-605-0736" class="contact-link">
+            <div class="cl-icon">📞</div>
+            318-605-0736
+          </a>
+          <a href="mailto:dileepsai542@gmail.com" class="contact-link">
+            <div class="cl-icon">✉️</div>
+            dileepsai542@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/dileeprsd" target="_blank" class="contact-link">
+            <div class="cl-icon">🔗</div>
+            linkedin.com/in/dileeprsd
+          </a>
+          <a href="https://dileepramisettyportfolio.lovable.app" target="_blank" class="contact-link">
+            <div class="cl-icon">🌐</div>
+            dileepramisettyportfolio.lovable.app
+          </a>
+          <div class="contact-link">
+            <div class="cl-icon">📍</div>
+            United States
+          </div>
+        </div>
+      </div>
+      <div class="reveal-r contact-visual">
+        <div class="contact-card">
+          <div class="cc-avatar">RD</div>
+          <div class="cc-name">R.S. Dileep</div>
+          <div class="cc-title">Software Engineer · Full Stack · AI</div>
+          <div class="cc-loc">📍 United States</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resume Download (anchor) -->
+<div id="resume-dl" style="position:relative;z-index:2;">
+  <div class="wrap" style="padding-bottom:60px;">
+    <div style="background:var(--card-bg);border:1px solid var(--border2);border-radius:var(--radius);padding:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+      <div>
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:4px;">Download Resume</div>
+        <div style="font-size:14px;color:var(--text2);">R.S. Dileep — Software Engineer &amp; Full Stack Developer</div>
+      </div>
+      <button onclick="window.print()" class="btn-primary">⬇ Download / Print PDF</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);">
+      © 2025 R.S. Dileep · Built with passion · <span style="color:var(--accent);">United States</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── SPLASH ───
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.classList.add('out');
+    setTimeout(() => { splash.style.display='none'; }, 700);
+  }, 1700);
+});
+
+// ─── CANVAS BG ───
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles=[], lines=[], frame=0;
+  const isMobile = () => window.innerWidth < 768;
+  const particleCount = () => isMobile() ? 40 : 100;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random()*W;
+      this.y = Math.random()*H;
+      this.vx = (Math.random()-0.5)*0.3;
+      this.vy = (Math.random()-0.5)*0.3;
+      this.r = Math.random()*1.5+0.5;
+      this.alpha = Math.random()*0.5+0.1;
+      this.color = Math.random() > 0.5 ? '62,207,255' : '123,95,255';
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    const n = particleCount();
+    for(let i=0;i<n;i++) particles.push(new Particle());
+  }
+
+  function drawGradientMesh() {
+    const t = frame*0.002;
+    // Blob 1
+    const g1 = ctx.createRadialGradient(W*0.2+Math.sin(t)*80,H*0.3+Math.cos(t)*60,0,W*0.2,H*0.3,W*0.45);
+    g1.addColorStop(0,'rgba(62,207,255,0.06)');
+    g1.addColorStop(1,'transparent');
+    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    // Blob 2
+    const g2 = ctx.createRadialGradient(W*0.8+Math.cos(t*0.7)*100,H*0.6+Math.sin(t*0.7)*80,0,W*0.8,H*0.6,W*0.4);
+    g2.addColorStop(0,'rgba(123,95,255,0.05)');
+    g2.addColorStop(1,'transparent');
+    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    // Blob 3
+    const g3 = ctx.createRadialGradient(W*0.5+Math.sin(t*1.3)*60,H*0.8+Math.cos(t*0.9)*40,0,W*0.5,H*0.8,W*0.3);
+    g3.addColorStop(0,'rgba(0,255,163,0.03)');
+    g3.addColorStop(1,'transparent');
+    ctx.fillStyle=g3; ctx.fillRect(0,0,W,H);
+  }
+
+  function drawLines() {
+    if(isMobile()) return;
+    const n = particles.length;
+    const maxDist = 120;
+    for(let i=0;i<n;i++) {
+      for(let j=i+1;j<n;j++) {
+        const dx = particles[i].x-particles[j].x;
+        const dy = particles[i].y-particles[j].y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if(d<maxDist) {
+          const alpha = (1-d/maxDist)*0.12;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(62,207,255,${alpha})`;
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    if(prefersReduced) return;
+    ctx.clearRect(0,0,W,H);
+    frame++;
+    drawGradientMesh();
+    drawLines();
+    particles.forEach(p=>{p.update();p.draw();});
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  initParticles();
+  window.addEventListener('resize',()=>{resize();initParticles();});
+  loop();
+
+  if(prefersReduced) {
+    const g = ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'rgba(62,207,255,0.04)');
+    g.addColorStop(1,'rgba(123,95,255,0.04)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+})();
+
+// ─── SCROLL PROGRESS ───
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('scrollBar').style.width = pct+'%';
+});
+
+// ─── SECTION DOTS ───
+const sections = ['hero','experience','achievements','skills','education','contact'];
+const sectionLabels = ['Hero','Experience','Achievements','Skills','Education','Contact'];
+const dotsEl = document.getElementById('sectionDots');
+sections.forEach((id,i) => {
+  const wrap = document.createElement('div'); wrap.className='sdot-wrap';
+  const dot = document.createElement('div'); dot.className='sdot'; dot.dataset.id=id;
+  dot.onclick = () => document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  const lbl = document.createElement('span'); lbl.className='sdot-label'; lbl.textContent=sectionLabels[i];
+  wrap.appendChild(dot); wrap.appendChild(lbl);
+  dotsEl.appendChild(wrap);
+});
+window.addEventListener('scroll', () => {
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    const rect = el.getBoundingClientRect();
+    const dot = dotsEl.querySelector(`[data-id="${id}"]`);
+    if(rect.top <= window.innerHeight/2 && rect.bottom >= window.innerHeight/2) {
+      dot.classList.add('active');
+    } else { dot.classList.remove('active'); }
+  });
+});
+
+// ─── REVEAL ON SCROLL ───
+const revealEls = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+},{threshold:0.12});
+revealEls.forEach(el => io.observe(el));
+
+// ─── ACCORDION ───
+function toggleCard(card) {
+  card.classList.toggle('open');
+}
+
+// ─── COUNTER ANIMATION ───
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const dur = 1800;
+  const start = performance.now();
+  const suffix = el.nextElementSibling?.className === 'achv-title' && el.nextElementSibling.textContent.startsWith('+') ? '+' : '%';
+  function step(now) {
+    const progress = Math.min((now-start)/dur,1);
+    const eased = 1-Math.pow(1-progress,3);
+    el.textContent = Math.floor(eased*target);
+    if(progress<1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+const counterIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      animateCounter(e.target);
+      counterIO.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('[data-target]').forEach(el => counterIO.observe(el));
+
+// ─── THEME TOGGLE ───
+function toggleTheme() {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.querySelector('.theme-btn').textContent = html.dataset.theme === 'dark' ? '☀' : '🌙';
+}
+
+// ─── MOBILE MENU ───
+function openMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+</script>
+</body>
+</html>
