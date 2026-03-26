@@ -45,7 +45,7 @@ University.
 | 📧 Email | dileepsai542@gmail.com |
 | 📞 Phone | 318-605-0736 |
 | 💼 LinkedIn | [linkedin.com/in/dileeprsd](https://www.linkedin.com/in/dileeprsd) |
-| 🌐 Portfolio | [dileepramisettyportfolio](https://www.rsdileep1798.github.io/DileepPortfolio/) |
+| 🌐 Portfolio | [rsdileep1798.github.io/DileepPortfolio/](https://www.rsdileep1798.github.io/DileepPortfolio/) |
 | 📍 Location | United States |
 
 ---
